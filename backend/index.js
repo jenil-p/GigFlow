@@ -4,6 +4,9 @@ import  dotenv  from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
 // routers import
 import authRoutes from './routes/auth.routes.js';
 import gigsRoutes from './routes/gig.routes.js';
@@ -15,7 +18,42 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(cors());
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  },
+});
+
+const onlineUsers = new Map();
+
+io.on("connection", (socket) => {
+  // When a user connects/logs in, they send their userID
+  socket.on("addNewUser", (userId) => {
+    onlineUsers.set(userId, socket.id);
+    console.log("User connected:", userId);
+  });
+
+  socket.on("disconnect", () => {
+    // Remove user from Map on disconnect
+    for (const [userId, socketId] of onlineUsers.entries()) {
+      if (socketId === socket.id) {
+        onlineUsers.delete(userId);
+        break;
+      }
+    }
+  });
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  req.onlineUsers = onlineUsers;
+  next();
+});
+
+
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -29,6 +67,6 @@ app.use('/api/gigs' , gigsRoutes);
 app.use('/api/bids' , bidsRouter);
 
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

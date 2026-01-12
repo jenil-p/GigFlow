@@ -93,7 +93,15 @@ export const hireFreelancer = async (req, res) => {
         await session.commitTransaction();
         session.endSession();
 
-        // TODO: Socket.io notification will go here later
+        //////////// those socker thing...
+        const freelancerSocketId = req.onlineUsers.get(bidToHire.freelancerId.toString());
+        if (freelancerSocketId) {
+            req.io.to(freelancerSocketId).emit("notification", {
+                type: "HIRED",
+                message: `congrats... you are hired for the project: ${gig.title}`,
+                gigId: gig._id,
+            });
+        }
 
         return res.status(200).json({ message: "freelancer hired successfully", hiredBid: bidToHire });
 
