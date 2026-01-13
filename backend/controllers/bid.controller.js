@@ -18,8 +18,6 @@ export async function createBid(req, res) {
             freelancerId: user.id
         })
 
-        console.log(bidExists)
-
         if (bidExists) {
             return res.status(400).json({ message: "You have already bided in this. If you want to update, delete that first then bid again." })
         }

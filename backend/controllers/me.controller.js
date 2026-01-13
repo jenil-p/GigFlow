@@ -11,7 +11,6 @@ export async function getMyGigs(req, res) {
     })
 
     return res.status(200).json({ gigs });
-    console.log("my gigs : ", gigs);
   } catch (error) {
     return res.status(500).json({ message: "internal server error" });
   }
@@ -31,7 +30,6 @@ export async function getMyBids(req, res) {
           select: "name email contactNumber"
         }
       });
-      console.log("My bids: ", bids);
     return res.status(200).json({ bids });
 
   } catch (error) {
