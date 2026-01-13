@@ -54,7 +54,7 @@ const GigDetail = () => {
                 price: data.price,
             });
             alert("Bid placed successfully!");
-            navigate('/dashboard')
+            // navigate('/dashboard')
             window.location.reload();
         } catch (err) {
             setBidError(err.response?.data?.message || "Failed to place bid");
