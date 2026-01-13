@@ -32,7 +32,6 @@ const onlineUsers = new Map();
 io.on("connection", (socket) => {
   socket.on("addNewUser", (userId) => {
     onlineUsers.set(userId, socket.id);
-    console.log("User connected:", userId);
   });
 
   socket.on("disconnect", () => {
