@@ -49,7 +49,7 @@ export const login = async (req, res) => {
         if (!isCorrect) return res.status(400).json({ message: "email or password is incorrect." });
 
         const token = createTokenForUser(user);
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none',});
 
         const { password, ...userInfo } = user._doc;
         return res.status(200).json({ message: "login sucessful", token: token, user: userInfo })
