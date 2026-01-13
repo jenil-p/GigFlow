@@ -13,6 +13,17 @@ export async function createBid(req, res) {
             return res.status(403).json({ message: "you ca'nt bid on your own gig" });
         }
 
+        const bidExists = await BidModel.findOne({
+            gigId: gigId,
+            freelancerId: user.id
+        })
+
+        console.log(bidExists)
+
+        if (bidExists) {
+            return res.status(400).json({ message: "You have already bided in this. If you want to update, delete that first then bid again." })
+        }
+
         const newBid = await BidModel.create({
             gigId: gigId,
             freelancerId: user.id,
@@ -27,7 +38,35 @@ export async function createBid(req, res) {
     }
 };
 
-export async function getBidsByGig (req, res) {
+export async function deleteBid(req, res) {
+    try {
+        const user = req.user;
+        const { gigId } = req.params;
+        
+        const bidExists = await BidModel.findOne({
+            gigId: gigId,
+            freelancerId: user.id
+        })
+
+        if (!bidExists) {
+            return res.status(400).json({ message: "bid does not exists!" })
+        }
+
+        if (bidExists.freelancerId.toString() !== user.id){
+            return res.status(403).json({ message: "Unauthorized access" })
+        }
+
+        const deletedBid = await BidModel.deleteOne({
+            gigId: gigId,
+            freelancerId: user.id
+        })
+        return res.status(200).json({ message: "bid deleted successfully" , deleteBid });
+    } catch (error) {
+        return res.status(500).json({ message: "internal server error" });
+    }
+}
+
+export async function getBidsByGig(req, res) {
     try {
         const user = req.user;
         const gigId = req.params.gigId;
@@ -43,7 +82,7 @@ export async function getBidsByGig (req, res) {
         }
 
         const bids = await BidModel.find({ gigId: gigId })
-            .populate("freelancerId", "name email");
+            .populate("freelancerId", "name email contactNumber");
 
         return res.status(200).json({ bids });
     } catch (err) {

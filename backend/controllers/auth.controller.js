@@ -7,6 +7,7 @@ function createTokenForUser(user) {
         id: user.id,
         contactnumber: user.contactnumber,
         fullname: user.fullname,
+        contactNumber: user.contactNumber,
         email: user.email
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -17,7 +18,7 @@ function createTokenForUser(user) {
 
 export const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, contactNumber , password } = req.body;
 
         const existingUser = await UserModel.findOne({ email });
         if (existingUser) return res.status(400).json({ message: "User already exists!" });
@@ -28,6 +29,7 @@ export const register = async (req, res) => {
         const newUser = new UserModel({
             name,
             email,
+            contactNumber: contactNumber,
             password: hashedPassword,
         });
 

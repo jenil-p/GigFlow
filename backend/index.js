@@ -1,6 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose';
-import  dotenv  from 'dotenv';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -10,7 +10,8 @@ import { Server } from 'socket.io';
 // routers import
 import authRoutes from './routes/auth.routes.js';
 import gigsRoutes from './routes/gig.routes.js';
-import bidsRouter from './routes/bid.routes.js'
+import bidsRoutes from './routes/bid.routes.js';
+import myRoutes from './routes/me.routes.js'
 
 
 dotenv.config();
@@ -61,9 +62,9 @@ mongoose.connect(process.env.MONGODB_URI)
 
 
 app.use('/api/auth', authRoutes);
-app.use('/api/gigs' , gigsRoutes);
-app.use('/api/bids' , bidsRouter);
-
+app.use('/api/gigs', gigsRoutes);
+app.use('/api/bids', bidsRoutes);
+app.use('/api/me', myRoutes);
 
 httpServer.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

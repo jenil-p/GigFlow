@@ -7,7 +7,7 @@ const CreateGig = () => {
         title: "",
         description: "",
         budget: "",
-        currency: "USD", // Default value
+        currency: "USD",
     });
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -23,77 +23,79 @@ const CreateGig = () => {
             navigate("/");
         } catch (err) {
             console.log(err);
-            setError("Failed to create gig. Please try again.");
+            setError("Failed to create gig.");
         }
     };
 
     return (
-        <div className="max-w-2xl mx-auto py-10">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">Post a New Gig</h1>
+        <div className="min-h-[80vh] flex items-center justify-center bg-gray-50/50 py-10">
+            <div className="max-w-xl w-full">
+                <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Post a New Gig</h1>
 
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 flex flex-col gap-6">
+                <form onSubmit={handleSubmit} className="bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-sm border border-white/60 flex flex-col gap-5">
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
-                    <input
-                        name="title"
-                        type="text"
-                        placeholder="e.g. Build a React Website"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none"
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                    <textarea
-                        name="description"
-                        rows="6"
-                        placeholder="Describe the requirements in detail..."
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none resize-none"
-                        onChange={handleChange}
-                        required
-                    ></textarea>
-                </div>
-
-                <div className="flex gap-4">
-                    <div className="w-1/3">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Currency</label>
-                        <select
-                            name="currency"
-                            value={formData.currency}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none bg-white"
-                        >
-                            <option value="USD">USD ($)</option>
-                            <option value="INR">INR (₹)</option>
-                        </select>
-                    </div>
-
-                    <div className="w-2/3">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Budget</label>
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Job Title</label>
                         <input
-                            name="budget"
-                            type="number"
-                            min="1"
-                            placeholder="100"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 outline-none"
+                            name="title"
+                            type="text"
+                            placeholder="e.g. Build a React Website"
+                            className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all"
                             onChange={handleChange}
                             required
                         />
                     </div>
-                </div>
 
-                {error && <p className="text-red-500 text-sm">{error}</p>}
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Description</label>
+                        <textarea
+                            name="description"
+                            rows="5"
+                            placeholder="Describe requirements..."
+                            className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none resize-none transition-all"
+                            onChange={handleChange}
+                            required
+                        ></textarea>
+                    </div>
 
-                <button
-                    type="submit"
-                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md transition mt-2"
-                >
-                    Publish Gig
-                </button>
-            </form>
+                    <div className="flex gap-4">
+                        <div className="w-1/3">
+                            <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Currency</label>
+                            <select
+                                name="currency"
+                                value={formData.currency}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gray-200 outline-none cursor-pointer"
+                            >
+                                <option value="USD">USD ($)</option>
+                                <option value="INR">INR (₹)</option>
+                            </select>
+                        </div>
+
+                        <div className="w-2/3">
+                            <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Budget</label>
+                            <input
+                                name="budget"
+                                type="number"
+                                min="1"
+                                placeholder="100"
+                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-gray-200 outline-none transition-all"
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    {error && <p className="text-red-500 text-xs text-center">{error}</p>}
+
+                    <button
+                        type="submit"
+                        className="mt-4 w-full bg-gray-900/80 hover:bg-gray-900 text-white text-sm font-semibold py-3 px-6 rounded-xl transition-all shadow-sm hover:shadow"
+                    >
+                        Publish Gig
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

@@ -46,19 +46,3 @@ export async function getGig(req, res) {
     return res.status(500).json({ message: "internal server error" });
   }
 };
-
-export async function getMyGigs(req, res) {
-  const user = req.user;
-
-  try {
-    const gigs = await GigModel.find({
-      ownerId: user.id,
-    })
-
-    console.log(gigs);
-    return res.status(200).json({ gigs });
-
-  } catch (error) {
-    return res.status(500).json({ message: "internal server error" });
-  }
-}
