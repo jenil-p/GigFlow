@@ -2,7 +2,7 @@ import BidModel from '../models/Bid.model.js';
 import GigModel from '../models/Gig.model.js';
 import mongoose from "mongoose";
 
-export const createBid = async (req, res) => {
+export async function createBid(req, res) {
     try {
         const user = req.user;
         const { gigId } = req.params;
@@ -27,7 +27,7 @@ export const createBid = async (req, res) => {
     }
 };
 
-export const getBidsByGig = async (req, res) => {
+export async function getBidsByGig (req, res) {
     try {
         const user = req.user;
         const gigId = req.params.gigId;
@@ -51,7 +51,7 @@ export const getBidsByGig = async (req, res) => {
     }
 };
 
-export const hireFreelancer = async (req, res) => {
+export async function hireFreelancer(req, res) {
     const session = await mongoose.startSession();
     session.startTransaction();
 

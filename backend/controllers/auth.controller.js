@@ -15,7 +15,7 @@ function createTokenForUser(user) {
     return token;
 }
 
-export const register = async (req, res, next) => {
+export const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
@@ -34,26 +34,37 @@ export const register = async (req, res, next) => {
         await newUser.save();
         return res.status(201).json({ message: "User created successfully" });
     } catch (err) {
-        next(err);
+        return res.status(500).json({ message: "internal server error" });
     }
 };
 
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
     try {
         const user = await UserModel.findOne({ email: req.body.email });
-        if (!user) return res.status(404).json({ message: "User not found!" });
+        if (!user) return res.status(404).json({ message: "email or password is incorrect." });
 
         const isCorrect = await bcrypt.compare(req.body.password, user.password);
-        if (!isCorrect) return res.status(400).json({ message: "Wrong password!" });
+        if (!isCorrect) return res.status(400).json({ message: "email or password is incorrect." });
 
         const token = createTokenForUser(user);
         res.cookie('token', token, { httpOnly: true });
 
-        return res.status(200).json({ message: "login sucessful", token: token})
+        const { password, ...userInfo } = user._doc;
+        return res.status(200).json({ message: "login sucessful", token: token, user: userInfo })
 
 
     } catch (err) {
-        next(err);
+        return res.status(500).json({ message: "internal server error" });
+    }
+};
+
+export const getMe = async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.user.id).select("-password");
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ message: "Server Error" });
     }
 };
 

@@ -29,14 +29,12 @@ const io = new Server(httpServer, {
 const onlineUsers = new Map();
 
 io.on("connection", (socket) => {
-  // When a user connects/logs in, they send their userID
   socket.on("addNewUser", (userId) => {
     onlineUsers.set(userId, socket.id);
     console.log("User connected:", userId);
   });
 
   socket.on("disconnect", () => {
-    // Remove user from Map on disconnect
     for (const [userId, socketId] of onlineUsers.entries()) {
       if (socketId === socket.id) {
         onlineUsers.delete(userId);
