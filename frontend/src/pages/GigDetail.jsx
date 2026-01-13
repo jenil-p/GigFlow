@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import newRequest from "../lib/api";
 import { AuthContext } from "../context/AuthContext";
 
@@ -17,6 +17,8 @@ const GigDetail = () => {
     const [loading, setLoading] = useState(true);
     const [bidError, setBidError] = useState(null);
     const [confirmBid, setConfirmBid] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchGig = async () => {
@@ -52,6 +54,7 @@ const GigDetail = () => {
                 price: data.price,
             });
             alert("Bid placed successfully!");
+            navigate('/dashboard')
             window.location.reload();
         } catch (err) {
             setBidError(err.response?.data?.message || "Failed to place bid");
