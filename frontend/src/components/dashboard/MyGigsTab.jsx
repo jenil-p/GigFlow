@@ -31,7 +31,7 @@ const MyGigsTab = () => {
                     <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-white/60 shadow-sm hover:shadow-md transition-all duration-300 flex justify-between items-center group-hover:bg-white/80">
                         <div>
                             <h3 className="font-semibold text-gray-900 group-hover:text-black transition-colors">{gig.title}</h3>
-                            <p className="text-gray-500 text-xs mt-1 truncate max-w-md font-light">
+                            <p className="text-gray-500 text-xs mt-1 truncate max-w-md font-light max-md:w-32">
                                 {gig.description}
                             </p>
                         </div>

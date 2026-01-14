@@ -10,7 +10,7 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen bg-gray-50/50 py-10">
-            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-10">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10">
 
                 <div className="md:col-span-3">
                     <div className="bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-sm sticky top-24 p-2">
